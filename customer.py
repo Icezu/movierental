@@ -1,5 +1,6 @@
 from rental import Rental
-from movie import Movie
+from movie import Movie, PriceStrategy
+import logging
 
 
 class Customer:
@@ -39,13 +40,21 @@ class Customer:
         fmt = "{:32s}   {:4d} {:6.2f}\n"
 
         for rental in self.rentals:
-            # accumulate activity
-            total_amount += rental.get_price()
-            # accumulate rent point
-            frequent_renter_points += rental.get_rental_point()
+            # price code
+            movie_price_code = rental.get_movie().get_price_code()
+            # days movie rented
+            rented_days = rental.get_days_rented()
+            if not isinstance(movie_price_code, PriceStrategy):
+                log = logging.getLogger()
+                log.error(
+                    f"Movie {rental.get_movie()} has unrecognized priceCode {movie_price_code}")
+            else:
+                # accumulate activity
+                total_amount += movie_price_code.price(rented_days)
+                frequent_renter_points += movie_price_code.points(rented_days)
             # add detail line to statement
             statement += fmt.format(rental.get_movie().get_title(),
-                                    rental.get_days_rented(), rental.get_price())
+                                    rented_days, total_amount)
 
         # footer: summary of charges
         statement += "\n"
@@ -60,8 +69,8 @@ class Customer:
 if __name__ == "__main__":
     customer = Customer("Edward Snowden")
     print(customer.statement())
-    movie = Movie("Hacker Noon", Movie.REGULAR)
+    movie = Movie("Hacker Noon", PriceStrategy.RegularPrice)
     customer.add_rental(Rental(movie, 2))
-    movie = Movie("CitizenFour", Movie.NEW_RELEASE)
+    movie = Movie("CitizenFour", PriceStrategy.NewReleasePrice)
     customer.add_rental(Rental(movie, 3))
     print(customer.statement())
