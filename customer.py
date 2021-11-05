@@ -41,7 +41,7 @@ class Customer:
 
         for rental in self.rentals:
             # price code
-            movie_price_code = rental.get_movie().get_price_code()
+            movie_price_code = rental.get_price_code()
             # days movie rented
             rented_days = rental.get_days_rented()
             if not isinstance(movie_price_code, PriceStrategy):

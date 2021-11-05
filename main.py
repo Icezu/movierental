@@ -8,11 +8,11 @@ from customer import Customer
 
 def make_movies():
     movies = [
-        Movie("The Irishman", PriceStrategy.NewReleasePrice),
-        Movie("CitizenFour", PriceStrategy.RegularPrice),
-        Movie("Frozen", PriceStrategy.ChildrensPrice),
-        Movie("El Camino", PriceStrategy.NewReleasePrice),
-        Movie("Particle Fever", PriceStrategy.RegularPrice)
+        Movie("The Irishman"),
+        Movie("CitizenFour"),
+        Movie("Frozen"),
+        Movie("El Camino"),
+        Movie("Particle Fever")
     ]
     return movies
 
@@ -22,6 +22,6 @@ if __name__ == '__main__':
     customer = Customer("Edward Snowden")
     days = 1
     for movie in make_movies():
-        customer.add_rental(Rental(movie, days))
+        customer.add_rental(Rental(movie, days, PriceStrategy.RegularPrice))
         days += 1
     print(customer.statement())

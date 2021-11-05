@@ -25,13 +25,8 @@ class Movie:
     """
     A movie available for rent.
     """
-    def __init__(self, title, price_code):
+    def __init__(self, title):
         self.title = title
-        self.price_code = price_code
-
-    def get_price_code(self):
-        """Get the price code."""
-        return self.price_code
 
     def get_title(self):
         """Get movie title."""
