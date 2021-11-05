@@ -25,12 +25,26 @@ class Movie:
     """
     A movie available for rent.
     """
-    def __init__(self, title):
-        self.title = title
+    def __init__(self, title, year: int, genre: list):
+        self.__title = title
+        self.__year = year
+        self.__genre = genre
+
+    def is_genre(self, same_genre):
+        """Returns True if same_genre matches one of the movie genre"""
+        return same_genre in self.genre
 
     def get_title(self):
         """Get movie title."""
-        return self.title
+        return self.__title
+    
+    def get_year(self):
+        """Get movie year."""
+        return self.__year
+    
+    def get_genre(self):
+        """Get movie genre."""
+        return self.__genre
 
     def __str__(self):
         return self.title
