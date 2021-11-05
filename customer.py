@@ -1,5 +1,6 @@
 from rental import Rental
-from movie import Movie, PriceStrategy
+from movie import Movie
+from price_strategy import PriceStrategy
 import logging
 
 
@@ -40,21 +41,14 @@ class Customer:
         fmt = "{:32s}   {:4d} {:6.2f}\n"
 
         for rental in self.rentals:
-            # price code
-            movie_price_code = rental.get_price_code()
             # days movie rented
             rented_days = rental.get_days_rented()
-            if not isinstance(movie_price_code, PriceStrategy):
-                log = logging.getLogger()
-                log.error(
-                    f"Movie {rental.get_movie()} has unrecognized priceCode {movie_price_code}")
-            else:
-                # accumulate activity
-                total_amount += movie_price_code.price(rented_days)
-                frequent_renter_points += movie_price_code.points(rented_days)
+            frequent_renter_points += rental.get_rental_point()
             # add detail line to statement
-            statement += fmt.format(rental.get_movie().get_title(),
-                                    rented_days, total_amount)
+            statement += fmt.format(rental.get_movie_title(),
+                                    rented_days, rental.get_price())
+            # and accumulate activity
+            total_amount += rental.get_price()
 
         # footer: summary of charges
         statement += "\n"
